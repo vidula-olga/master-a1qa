@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -18,7 +16,7 @@ public class App {
 
 
     private static List<String> splitToWords(String value) {
-        String[] words = value.split("[ ,\\.!\\(\\)]");
+        String[] words = value.split("[ ,\\.!\\(\\)\\:\\;]");
         ArrayList<String> result = new ArrayList<>();
         for (String word : words) {
             if (!word.isEmpty())
@@ -52,15 +50,31 @@ public class App {
         String string1 = readResource("string1.txt");
         String string2 = readResource("string2.txt");
         List<String> words1 = splitToWords(string1);
-        List<String> words2 = splitToWords(string2);
+        //     List<String> words2 = splitToWords(string2);
 
     /* This is how to declare HashMap */
         HashMap<String, Integer> hmap = new HashMap<>();
-        for (String item:words1) {
+        for (String item : words1) {
             //String item=words1[i]
             Integer count = hmap.getOrDefault(item, 0);
             hmap.put(item, count + 1);
         }
+
+        Integer content = hmap.getOrDefault(string2, 0);
+        System.out.println("количество повторений:" + content);
+
+        Set<Character> marks = new HashSet<>(Arrays.asList('.', ',', ';', ':', '!', '?'));
+        int markcount = 0;
+        for (int i = 0; i < string1.length(); i++) {
+            //String item=words1[i]
+            char ch = string1.charAt(i);
+            if (marks.contains(ch)) {
+                markcount++;
+            }
+
+        }
+        System.out.println("количество знаков препинания:" + markcount);
     }
+
 
 }
