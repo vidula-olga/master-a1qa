@@ -41,7 +41,7 @@ public class WebTest {
 
         List<MenuItem> items = new ArrayList<>();
 
-        List<WebElement> menuItemsLevel1Spans = driver.findElements(By.xpath("//*[@id=\"Catalog\"]/div//div/span[@data-level=1]"));
+        List<WebElement> menuItemsLevel1Spans = Driver.getInstance().getWebDriver().findElements(By.xpath("//*[@id=\"Catalog\"]/div//div/span[@data-level=1]"));
         for (WebElement element : menuItemsLevel1Spans) {
             String id = element.getAttribute("id");
             String name = element.getText();
@@ -54,23 +54,14 @@ public class WebTest {
 
     public void openMenuItem(MenuItem item) {
         String xpath = String.format("//*[@id=\"%s\"]", item.getId());
-        WebElement menuLink = driver.findElement(By.xpath(xpath));
+        WebElement menuLink = Driver.getInstance().getWebDriver().findElement(By.xpath(xpath));
         menuLink.click();
-    }
-
-    static WebDriver driver;
-
-    @BeforeClass
-    public static void setupChromeDriver() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
     }
 
     @AfterClass
     public static void closeChromeDriver() {
-        if (driver != null) {
-            driver.close();
+        if (Driver.getInstance().getWebDriver() != null) {
+            Driver.getInstance().getWebDriver().close();
         }
     }
 
@@ -79,6 +70,7 @@ public class WebTest {
      */
     @Test
     public void shouldAnswerWithTrue() {
+       WebDriver driver= Driver.getInstance().getWebDriver()
         driver.get("https://www.shop.by");
 
 
