@@ -4,11 +4,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -67,9 +69,9 @@ public class WebTest {
 
     @AfterClass
     public static void closeChromeDriver() {
-//        if (driver != null) {
-//            driver.close();
-//        }
+        if (driver != null) {
+            driver.close();
+        }
     }
 
     /**
@@ -80,9 +82,12 @@ public class WebTest {
         driver.get("https://www.shop.by");
 
 
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        FluentWait<WebDriver> pageLoadWait = new FluentWait<>(driver)
+                .pollingEvery(Duration.ofSeconds(5))
+                .withTimeout(Duration.ofSeconds(5))
+                .ignoring(NoSuchElementException.class);
 
-        wait.until(new Function<WebDriver, Boolean>() {
+        pageLoadWait.until(new Function<WebDriver, Boolean>() {
             @Override
             public Boolean apply(WebDriver webDriver) {
                 WebElement element = webDriver.findElement(By.xpath("//*[@id=\"Header__Authentication\"]/div[2]/span"));
@@ -106,8 +111,11 @@ public class WebTest {
         //    MenuItem selectedItem = menuItems.get(0);
         //    openMenuItem(selectedItem);
 
-
-        wait.until(new Function<WebDriver, Boolean>() {
+        FluentWait<WebDriver> loginWait = new FluentWait<>(driver)
+                .pollingEvery(Duration.ofSeconds(5))
+                .withTimeout(Duration.ofSeconds(5))
+                .ignoring(NoSuchElementException.class);
+        loginWait.until(new Function<WebDriver, Boolean>() {
             @Override
             public Boolean apply(WebDriver webDriver) {
                 WebElement element = webDriver.findElement(By.xpath("//*[@id=\"Header__Authentication\"]/div[2]/a/div/div/span/div"));
