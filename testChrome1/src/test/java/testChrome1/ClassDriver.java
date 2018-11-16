@@ -3,14 +3,15 @@ package testChrome1;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.w3c.dom.ranges.RangeException;
 
 /**
  * Created by New User on 15.11.2018.
  */
-public class Driver {
-    private static Driver instance;
+public class ClassDriver {
+    private static ClassDriver instance;
 
-    private Driver() {
+    private ClassDriver() {
         String browser = "chrome";
         switch (browser) {
             case "ie": {
@@ -23,7 +24,9 @@ public class Driver {
                 break;
             }
             default:
-                throw new RuntimeException("unknown browser " + browser);
+                RuntimeException exception = new RuntimeException("unknown browser " + browser);
+                throw exception;
+                // throw new RuntimeException("unknown browser " + browser);
         }
         webDriver.manage().window().maximize();
     }
@@ -34,9 +37,9 @@ public class Driver {
         return webDriver;
     }
 
-    public static Driver getInstance() {
+    public static ClassDriver getInstance() {
         if (instance == null) {
-            instance = new Driver();
+            instance = new ClassDriver();
         }
         return instance;
 
