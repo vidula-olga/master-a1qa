@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -39,7 +38,7 @@ public class Steps {
 
     public void login(String userLogin, String password, String displayName) {
 
-        ClassDriver singletoneInstance = ClassDriver.getInstance();
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         FluentWait<WebDriver> pageLoadWait = new FluentWait<>(driver)
                 .pollingEvery(Duration.ofSeconds(2))
@@ -88,7 +87,7 @@ public class Steps {
     }
 
     public void logout() {
-        ClassDriver singletoneInstance = ClassDriver.getInstance();
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
 
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
@@ -133,7 +132,7 @@ public class Steps {
     public List<WebTest.MenuItem> getMenuLevel1() {
         List<WebTest.MenuItem> items = new ArrayList<>();
 
-        List<WebElement> menuItemsLevel1Spans = ClassDriver.getInstance().getWebDriver().findElements(By.xpath("//*[@id=\"Catalog\"]/div//div/span[@data-level=1]"));
+        List<WebElement> menuItemsLevel1Spans = WebDriverSingleton.getInstance().getWebDriver().findElements(By.xpath("//*[@id=\"Catalog\"]/div//div/span[@data-level=1]"));
         for (WebElement element : menuItemsLevel1Spans) {
             String id = element.getAttribute("id");
             String name = element.getText();
@@ -148,7 +147,7 @@ public class Steps {
 
         List<String> itemNames = new ArrayList<>();
 
-        WebDriver webDriver = ClassDriver.getInstance().getWebDriver();
+        WebDriver webDriver = WebDriverSingleton.getInstance().getWebDriver();
         List<WebElement> itemsWithReview= webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
         for(WebElement itemWithReview: itemsWithReview) {
             String itemName = itemWithReview.findElement(By.xpath(".//a[@class=\"ModelReviewsHome__NameModel\"]")).getText();

@@ -34,14 +34,14 @@ public class WebTest {
 
     public void openMenuItem(MenuItem item) {
         String xpath = String.format("//*[@id=\"%s\"]", item.getId());
-        WebElement menuLink = ClassDriver.getInstance().getWebDriver().findElement(By.xpath(xpath));
+        WebElement menuLink = WebDriverSingleton.getInstance().getWebDriver().findElement(By.xpath(xpath));
         menuLink.click();
     }
 
     @AfterClass
     public static void closeChromeDriver() {
-  /*      if (ClassDriver.getInstance().getWebDriver() != null) {
-            ClassDriver.getInstance().getWebDriver().close();
+  /*      if (WebDriverSingleton.getInstance().getWebDriver() != null) {
+            WebDriverSingleton.getInstance().getWebDriver().close();
         }*/
     }
 
@@ -50,7 +50,7 @@ public class WebTest {
      */
     @Test
     public void shouldAnswerWithTrue() {
-        ClassDriver singletoneInstance = ClassDriver.getInstance();
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         String username = "(44)765-90-60";
         String password = "testa1qa";
