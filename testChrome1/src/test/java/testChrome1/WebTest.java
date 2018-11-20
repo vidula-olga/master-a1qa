@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -61,11 +62,17 @@ public class WebTest {
 
         List<MenuItem> menuItems = steps.getMenuLevel1();
         int randomIndex = (int)(Math.random()*menuItems.size());
-        MenuItem selectedItem = menuItems.get(randomIndex);
-        openMenuItem(selectedItem);
+//        MenuItem selectedItem = menuItems.get(randomIndex);
+//        openMenuItem(selectedItem);
+//
 
+        List<String> names = steps.getItemNamesWithReview();
+        try {
+            steps.saveToCSV(names);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         steps.logout();
-
     }
 }

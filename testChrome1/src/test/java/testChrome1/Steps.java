@@ -1,11 +1,18 @@
 package testChrome1;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,5 +142,31 @@ public class Steps {
         }
 
         return items;
+    }
+
+    public List<String> getItemNamesWithReview() {
+
+        List<String> itemNames = new ArrayList<>();
+
+        WebDriver webDriver = ClassDriver.getInstance().getWebDriver();
+        List<WebElement> itemsWithReview= webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
+        for(WebElement itemWithReview: itemsWithReview) {
+            String itemName = itemWithReview.findElement(By.xpath(".//a[@class=\"ModelReviewsHome__NameModel\"]")).getText();
+            itemNames.add(itemName);
+        }
+
+        return itemNames;
+    }
+
+    private static final String SAMPLE_CSV_FILE = "./test.csv";
+    public void saveToCSV(List<String> items) throws IOException {
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get(SAMPLE_CSV_FILE));
+        CSVPrinter csvPrinter =  new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("index", "name"));
+        int index = 0;
+        for(String name: items) {
+            csvPrinter.printRecord(index, name);
+            index++;
+        }
+        csvPrinter.flush();
     }
 }
