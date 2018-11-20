@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,20 +30,6 @@ public class WebTest {
         }
     }
 
-    public List<MenuItem> getMenuLevel1() {
-
-        List<MenuItem> items = new ArrayList<>();
-
-        List<WebElement> menuItemsLevel1Spans = ClassDriver.getInstance().getWebDriver().findElements(By.xpath("//*[@id=\"Catalog\"]/div//div/span[@data-level=1]"));
-        for (WebElement element : menuItemsLevel1Spans) {
-            String id = element.getAttribute("id");
-            String name = element.getText();
-            MenuItem menuItem = new MenuItem(id, name);
-            items.add(menuItem);
-        }
-
-        return items;
-    }
 
     public void openMenuItem(MenuItem item) {
         String xpath = String.format("//*[@id=\"%s\"]", item.getId());
@@ -54,9 +39,9 @@ public class WebTest {
 
     @AfterClass
     public static void closeChromeDriver() {
-        if (ClassDriver.getInstance().getWebDriver() != null) {
+  /*      if (ClassDriver.getInstance().getWebDriver() != null) {
             ClassDriver.getInstance().getWebDriver().close();
-        }
+        }*/
     }
 
     /**
@@ -74,11 +59,13 @@ public class WebTest {
         Steps steps = Steps.getInstance();
         steps.login(username, password, displayName);
 
-        //    List<MenuItem> menuItems = getMenuLevel1();
+        List<MenuItem> menuItems = steps.getMenuLevel1();
+        int randomIndex = (int)(Math.random()*menuItems.size());
+        MenuItem selectedItem = menuItems.get(randomIndex);
+        openMenuItem(selectedItem);
 
-        //    MenuItem selectedItem = menuItems.get(0);
-        //    openMenuItem(selectedItem);
 
+        steps.logout();
 
     }
 }
