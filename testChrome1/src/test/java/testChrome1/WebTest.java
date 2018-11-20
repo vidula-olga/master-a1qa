@@ -40,9 +40,9 @@ public class WebTest {
 
     @AfterClass
     public static void closeChromeDriver() {
-  /*      if (WebDriverSingleton.getInstance().getWebDriver() != null) {
+        if (WebDriverSingleton.getInstance().getWebDriver() != null) {
             WebDriverSingleton.getInstance().getWebDriver().close();
-        }*/
+        }
     }
 
     /**
@@ -61,10 +61,11 @@ public class WebTest {
         steps.login(username, password, displayName);
 
         List<MenuItem> menuItems = steps.getMenuLevel1();
-        int randomIndex = (int)(Math.random()*menuItems.size());
-//        MenuItem selectedItem = menuItems.get(randomIndex);
-//        openMenuItem(selectedItem);
-//
+        int randomIndex = (int) (Math.random() * menuItems.size());
+        MenuItem selectedItem = menuItems.get(randomIndex);
+        openMenuItem(selectedItem);
+
+        steps.openMainPage();
 
         List<String> names = steps.getItemNamesWithReview();
         try {

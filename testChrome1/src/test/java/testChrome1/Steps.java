@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -143,13 +145,26 @@ public class Steps {
         return items;
     }
 
+    public void openMainPage() {
+        WebDriver driver = WebDriverSingleton.getInstance().getWebDriver();
+        driver.get("https://www.shop.by");
+
+        WebElement myDinamicElement = (new WebDriverWait(driver, 10))
+                .until(new ExpectedCondition<WebElement>() {
+                    @Override
+                    public WebElement apply(WebDriver d) {
+                        return d.findElement(By.xpath("//*[@id=\"yt0\"]"));
+                    }
+                });
+    }
+
     public List<String> getItemNamesWithReview() {
 
         List<String> itemNames = new ArrayList<>();
 
         WebDriver webDriver = WebDriverSingleton.getInstance().getWebDriver();
-        List<WebElement> itemsWithReview= webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
-        for(WebElement itemWithReview: itemsWithReview) {
+        List<WebElement> itemsWithReview = webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
+        for (WebElement itemWithReview : itemsWithReview) {
             String itemName = itemWithReview.findElement(By.xpath(".//a[@class=\"ModelReviewsHome__NameModel\"]")).getText();
             itemNames.add(itemName);
         }
@@ -158,11 +173,12 @@ public class Steps {
     }
 
     private static final String SAMPLE_CSV_FILE = "./test.csv";
+
     public void saveToCSV(List<String> items) throws IOException {
         BufferedWriter writer = Files.newBufferedWriter(Paths.get(SAMPLE_CSV_FILE));
-        CSVPrinter csvPrinter =  new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("index", "name"));
+        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("index", "name"));
         int index = 0;
-        for(String name: items) {
+        for (String name : items) {
             csvPrinter.printRecord(index, name);
             index++;
         }
