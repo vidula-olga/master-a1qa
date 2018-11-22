@@ -1,9 +1,10 @@
 package testChrome1;
 
 import org.junit.AfterClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Unit test for simple App.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WebTest {
 
 
@@ -48,7 +50,7 @@ public class WebTest {
     }
 
     @Test
-    public void testLogin() {
+    public void test01Login() {
         //*
       //  WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
        // WebDriver driver = singletoneInstance.getWebDriver();
@@ -60,14 +62,14 @@ public class WebTest {
     }
 
     @Test
-    public void testGetMenuItems() {
+    public void test02GetMenuItems() {
         List<MenuItem> menuItems = Steps.getInstance().getMenuLevel1();
         //Assert.assertEquals();
         System.out.println();
     }
 
     @Test
-    public void testOpenMenuRandom() {
+    public void test03OpenMenuRandom() {
         List<MenuItem> menuItems = Steps.getInstance().getMenuLevel1();
         int randomIndex = (int) (Math.random() * menuItems.size());
         MenuItem selectedItem = menuItems.get(randomIndex);
@@ -77,14 +79,14 @@ public class WebTest {
     }
 
     @Test
-    public void testGoToMainPage() {
+    public void test04GoToMainPage() {
         Steps.getInstance().openMainPage();
         //Assert.assertEquals();
         System.out.println();
     }
 
     @Test
-    public void testSaveReviewToCSV() {
+    public void test05SaveReviewToCSV() {
         WebConfigration configration = WebConfigration.getInstance();
         String filename;
         List<String> names = Steps.getInstance().getItemNamesWithReview();
@@ -98,7 +100,7 @@ public class WebTest {
     }
 
     @Test
-    public void testLogout() {
+    public void test06Logout() {
         Steps.getInstance().logout();
         // Assert.assertEquals();
         System.out.println();

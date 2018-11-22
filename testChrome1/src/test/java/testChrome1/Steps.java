@@ -18,6 +18,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -165,17 +167,31 @@ public class Steps {
     }
 
     public List<String> getItemNamesWithReview() {
-
-        List<String> itemNames = new ArrayList<>();
-
         WebDriver webDriver = WebDriverSingleton.getInstance().getWebDriver();
-        List<WebElement> itemsWithReview = webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
-        for (WebElement itemWithReview : itemsWithReview) {
-            String itemName = itemWithReview.findElement(By.xpath(".//a[@class=\"ModelReviewsHome__NameModel\"]")).getText();
-            itemNames.add(itemName);
+        String pageSource = webDriver.getPageSource();
+
+        Pattern reviewPattern = Pattern.compile("<a class=\"ModelReviewsHome__NameModel\".*>(.*)</a><a.*");
+
+        String[] lines = pageSource.split("\n");
+
+        List<String> regexpNames = new ArrayList<>();
+        for(String line: lines) {
+            Matcher m = reviewPattern.matcher(line);
+            if (m.matches()) {
+                String itemName = m.group(1);
+                regexpNames.add(itemName);
+            }
         }
 
-        return itemNames;
+        return regexpNames;
+//        List<String> itemNames = new ArrayList<>();
+//        List<WebElement> itemsWithReview = webDriver.findElements(By.xpath("//div[@class=\"ModelReviewsHome__ModelReview\"]"));
+//        for (WebElement itemWithReview : itemsWithReview) {
+//            String itemName = itemWithReview.findElement(By.xpath(".//a[@class=\"ModelReviewsHome__NameModel\"]")).getText();
+//            itemNames.add(itemName);
+//        }
+//
+//        return itemNames;
     }
 
 
