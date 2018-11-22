@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static testChrome1.WebTest.SAMPLE_CSV_FILE;
+
 /**
  * Created by New User on 16.11.2018.
  */
@@ -154,7 +156,7 @@ public class Steps {
         WebDriver driver = WebDriverSingleton.getInstance().getWebDriver();
         driver.get("https://www.shop.by");
 
-        WebElement myDinamicElement = (new WebDriverWait(driver, 10))
+        WebElement myDinamicElement = (new WebDriverWait(driver, 60))
                 .until(new ExpectedCondition<WebElement>() {
                     @Override
                     public WebElement apply(WebDriver d) {
@@ -177,9 +179,8 @@ public class Steps {
         return itemNames;
     }
 
-    private static final String SAMPLE_CSV_FILE = "./test.csv";
 
-    public void saveToCSV(List<String> items) throws IOException {
+    public void saveToCSV(String sampleCsvFile, List<String> items) throws IOException {
         BufferedWriter writer = Files.newBufferedWriter(Paths.get(SAMPLE_CSV_FILE));
         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("index", "name"));
         int index = 0;
