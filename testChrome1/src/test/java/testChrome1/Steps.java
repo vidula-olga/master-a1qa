@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static testChrome1.WebTest.SAMPLE_CSV_FILE;
 
 /**
  * Created by New User on 16.11.2018.
@@ -45,10 +44,11 @@ public class Steps {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         driver.get(url);
+        WebConfigration configration = WebConfigration.getInstance();
 
         FluentWait<WebDriver> pageLoadWait = new FluentWait<>(driver)
-                .pollingEvery(Duration.ofSeconds(2))
-                .withTimeout(Duration.ofSeconds(60))
+                .pollingEvery(Duration.ofSeconds(configration.getPolling()))
+                .withTimeout(Duration.ofSeconds(configration.getTimeout()))
                 .ignoring(NoSuchElementException.class);
 
 
@@ -74,12 +74,10 @@ public class Steps {
         WebElement login = driver.findElement(By.xpath("//*[@name=\"yt2\"]"));
         login.click();
 
-
-
         System.out.println(System.currentTimeMillis() / 1000);
         FluentWait<WebDriver> loginWait = new FluentWait<>(driver)
-                .pollingEvery(Duration.ofSeconds(5))
-                .withTimeout(Duration.ofSeconds(60))
+                .pollingEvery(Duration.ofSeconds(configration.getPolling()))
+                .withTimeout(Duration.ofSeconds(configration.getTimeout()))
                 .ignoring(NoSuchElementException.class);
 
         try {
@@ -98,10 +96,11 @@ public class Steps {
     public void logout() {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
+        WebConfigration configration = WebConfigration.getInstance();
 
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
-                .pollingEvery(Duration.ofSeconds(1))
-                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(configration.getPolling()))
+                .withTimeout(Duration.ofSeconds(configration.getTimeout()))
                 .ignoring(NoSuchElementException.class);
 
         WebElement logoutMenu = wait.until(new Function<WebDriver, WebElement>() {
@@ -181,7 +180,8 @@ public class Steps {
 
 
     public void saveToCSV(String sampleCsvFile, List<String> items) throws IOException {
-        BufferedWriter writer = Files.newBufferedWriter(Paths.get(SAMPLE_CSV_FILE));
+        WebConfigration configration = WebConfigration.getInstance();
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get(configration.getSAMPLE_CSV_FILE()));
         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("index", "name"));
         int index = 0;
         for (String name : items) {

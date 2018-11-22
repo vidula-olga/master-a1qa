@@ -14,13 +14,7 @@ import java.util.List;
  */
 public class WebTest {
 
-    /// global
-    public static String username = "(44)765-90-60";
-    public static String password = "testa1qa";
-    public static String displayName = "userShop.by_20";
-    public static String url = "https://www.shop.by";
 
-    ///end global
     public static class MenuItem {
         private String id;
         private String name;
@@ -56,11 +50,12 @@ public class WebTest {
     @Test
     public void testLogin() {
         //*
-        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
-        WebDriver driver = singletoneInstance.getWebDriver();
+      //  WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
+       // WebDriver driver = singletoneInstance.getWebDriver();
+        WebConfigration configration = WebConfigration.getInstance();
 
 
-        Steps.getInstance().login(url, username, password, displayName);
+        Steps.getInstance().login(configration.getUrl(), configration.getUsername(), configration.getPassword(), configration.getDisplayName());
         System.out.println();
     }
 
@@ -72,7 +67,7 @@ public class WebTest {
     }
 
     @Test
-    public void testGetMenuRandom() {
+    public void testOpenMenuRandom() {
         List<MenuItem> menuItems = Steps.getInstance().getMenuLevel1();
         int randomIndex = (int) (Math.random() * menuItems.size());
         MenuItem selectedItem = menuItems.get(randomIndex);
@@ -90,11 +85,11 @@ public class WebTest {
 
     @Test
     public void testSaveReviewToCSV() {
-
+        WebConfigration configration = WebConfigration.getInstance();
         String filename;
         List<String> names = Steps.getInstance().getItemNamesWithReview();
         try {
-            Steps.getInstance().saveToCSV(filename, names);
+            Steps.getInstance().saveToCSV(configration.getSAMPLE_CSV_FILE(), names);
         } catch (IOException e) {
             e.printStackTrace();
         }
