@@ -13,6 +13,14 @@ import java.util.List;
  * Unit test for simple App.
  */
 public class WebTest {
+
+    /// global
+    public static String username = "(44)765-90-60";
+    public static String password = "testa1qa";
+    public static String displayName = "userShop.by_20";
+    public static String url = "https://www.shop.by";
+
+    ///end global
     public static class MenuItem {
         private String id;
         private String name;
@@ -45,35 +53,61 @@ public class WebTest {
         }
     }
 
-    /**
-     * Rigorous Test :-)
-     */
     @Test
-    public void shouldAnswerWithTrue() {
+    public void testLogin() {
+        //*
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
-        String username = "(44)765-90-60";
-        String password = "testa1qa";
-        String displayName = "userShop.by_20";
-        driver.get("https://www.shop.by");
 
-        Steps steps = Steps.getInstance();
-        steps.login(username, password, displayName);
 
-        List<MenuItem> menuItems = steps.getMenuLevel1();
+        Steps.getInstance().login(url, username, password, displayName);
+        System.out.println();
+    }
+
+    @Test
+    public void testGetMenuItems() {
+        List<MenuItem> menuItems = Steps.getInstance().getMenuLevel1();
+        //Assert.assertEquals();
+        System.out.println();
+    }
+
+    @Test
+    public void testGetMenuRandom() {
+        List<MenuItem> menuItems = Steps.getInstance().getMenuLevel1();
         int randomIndex = (int) (Math.random() * menuItems.size());
         MenuItem selectedItem = menuItems.get(randomIndex);
         openMenuItem(selectedItem);
+        //Assert.assertEquals();
+        System.out.println();
+    }
 
-        steps.openMainPage();
+    @Test
+    public void testGoToMainPage() {
+        Steps.getInstance().openMainPage();
+        //Assert.assertEquals();
+        System.out.println();
+    }
 
-        List<String> names = steps.getItemNamesWithReview();
+    @Test
+    public void testSaveReviewToCSV() {
+
+        String filename;
+        List<String> names = Steps.getInstance().getItemNamesWithReview();
         try {
-            steps.saveToCSV(names);
+            Steps.getInstance().saveToCSV(filename, names);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        steps.logout();
+        // Assert.assertEquals();
+        System.out.println();
     }
+
+    @Test
+    public void testLogout() {
+        Steps.getInstance().logout();
+        // Assert.assertEquals();
+        System.out.println();
+    }
+
+
 }

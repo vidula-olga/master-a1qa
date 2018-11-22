@@ -38,14 +38,17 @@ public class Steps {
     }
 
 
-    public void login(String userLogin, String password, String displayName) {
+    public void login(String url, String userLogin, String password, String displayName) {
 
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
+        driver.get(url);
+
         FluentWait<WebDriver> pageLoadWait = new FluentWait<>(driver)
                 .pollingEvery(Duration.ofSeconds(2))
                 .withTimeout(Duration.ofSeconds(60))
                 .ignoring(NoSuchElementException.class);
+
 
         WebElement loginElement = pageLoadWait.until(new Function<WebDriver, WebElement>() {
             @Override
@@ -68,6 +71,8 @@ public class Steps {
 
         WebElement login = driver.findElement(By.xpath("//*[@name=\"yt2\"]"));
         login.click();
+
+
 
         System.out.println(System.currentTimeMillis() / 1000);
         FluentWait<WebDriver> loginWait = new FluentWait<>(driver)
