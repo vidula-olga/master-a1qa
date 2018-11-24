@@ -1,4 +1,4 @@
-package testChrome1;
+package testChrome1.shop.by;
 
 import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import testChrome1.WebConfigration;
+import testChrome1.WebDriverSingleton;
 
 import java.io.IOException;
 import java.util.List;

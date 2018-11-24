@@ -1,4 +1,4 @@
-package testChrome1;
+package testChrome1.shop.by;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testChrome1.WebConfigration;
+import testChrome1.WebDriverSingleton;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
