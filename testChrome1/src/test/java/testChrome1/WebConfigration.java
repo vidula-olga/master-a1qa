@@ -10,6 +10,7 @@ public class WebConfigration {
     private String password = "testa1qa";
     private String displayName = "userShop.by_20";
     private String url = "https://www.shop.by";
+    private String urlSteam = "https://store.steampowered.com/";
     private String SAMPLE_CSV_FILE = "./test.csv";
     private Integer pollingTimeout = 5;
     private Integer durationTimeout = 60;
@@ -56,4 +57,7 @@ public class WebConfigration {
     public String getSAMPLE_CSV_FILE() {
         return SAMPLE_CSV_FILE;
     }
+
+    public String getUrlSteam() {
+        return urlSteam;}
 }
