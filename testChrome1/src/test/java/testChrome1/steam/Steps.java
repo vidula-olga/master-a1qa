@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testChrome1.WebConfigration;
 import testChrome1.WebDriverSingleton;
-import testChrome1.shop.by.WebTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -87,6 +86,7 @@ public class Steps {
         actionsElement.click();
 
     }
+
     public List<MenuItem> getListOfGames() {
         List<MenuItem> items = new ArrayList<>();
 
@@ -94,17 +94,35 @@ public class Steps {
         //*[@id="tab_content_TopSellers"]
         for (WebElement element : menuItemsGamesSpans) {
             String href = element.getAttribute("href");
-            String discount = element.findElement(By.xpath("//div[(@class='discount_pct' or @class='bundle_base_discount')]")).getText();
+            String discountValue = element.findElement(By.xpath(".//div[(@class='discount_pct' or @class='bundle_base_discount')]")).getText();
+            String discountWithoutPercent = discountValue.replace("%", "");
+            if (discountWithoutPercent.isEmpty()) {
+                continue;
+            }
+            Integer discount = -Integer.valueOf(discountWithoutPercent); // -10 -> 10
             MenuItem menuItem = new MenuItem(href, discount);
             items.add(menuItem);
         }
 
         return items;
     }
-    public void findMaxDiscount(List<MenuItem> itemsForMaxDiscountChoice) {
-      //  List<WebTest.MenuItem> maxDiscount =
+
+    public MenuItem findElementWithMaxDiscount(List<MenuItem> itemsForMaxDiscountChoice) {
+
+        if (itemsForMaxDiscountChoice == null || itemsForMaxDiscountChoice.isEmpty()) {
+            return null;
+        }
+        MenuItem max = itemsForMaxDiscountChoice.get(0);
+        for (MenuItem element : itemsForMaxDiscountChoice) {
+            if (max.getDiscount() < element.getDiscount()) {
+                max = element;
+            }
+        }
+
+        return max;
     }
-    public void openMaxDiscountGame(){
+
+    public void openMaxDiscountGame() {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         WebConfigration configration = WebConfigration.getInstance();

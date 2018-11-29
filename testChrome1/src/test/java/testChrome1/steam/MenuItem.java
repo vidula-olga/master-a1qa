@@ -5,9 +5,9 @@ package testChrome1.steam;
  */
 public class MenuItem {
     private String id;
-    private String discount;
+    private Integer discount;
 
-    public MenuItem(String id, String discount) {
+    public MenuItem(String id, Integer discount) {
         this.id = id;
         this.discount = discount;
     }
@@ -16,7 +16,7 @@ public class MenuItem {
         return id;
     }
 
-    public String getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 }

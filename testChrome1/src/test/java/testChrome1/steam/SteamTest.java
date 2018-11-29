@@ -9,6 +9,8 @@ import testChrome1.WebConfigration;
 import testChrome1.WebDriverSingleton;
 import testChrome1.shop.by.WebTest;
 
+import java.util.List;
+
 /**
  * Created by New User on 24.11.2018.
  */
@@ -46,8 +48,10 @@ public class SteamTest {
     }
 
     @Test
-    public void test04FindMaxDiscount() {
-        Steps.getInstance().getListOfGames();
+    public void test04OpenItemWithMaxDiscount() {
+        List<MenuItem> menuItems = Steps.getInstance().getListOfGames();
+        MenuItem menuItemWithMaxDiscount = Steps.getInstance().findElementWithMaxDiscount(menuItems);
+
     }
 
     @Test
