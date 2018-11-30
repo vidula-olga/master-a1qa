@@ -1,5 +1,7 @@
 package testChrome1.steam;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -51,21 +53,16 @@ public class SteamTest {
     public void test04OpenItemWithMaxDiscount() {
         List<MenuItem> menuItems = Steps.getInstance().getListOfGames();
         MenuItem menuItemWithMaxDiscount = Steps.getInstance().findElementWithMaxDiscount(menuItems);
+        Assert.assertNotNull(menuItemWithMaxDiscount);
+        // TODO: open(menuItemWithMaxDiscount)
 
+        // TODO: check real discount  -> get real discount && compare with discount of menuItemWithMaxDiscount
+        Integer realDiscount = Steps.getInstance().openMaxDiscountGameAndDiscountCompare(menuItemWithMaxDiscount);
+        Assert.assertThat(realDiscount, CoreMatchers.is(menuItemWithMaxDiscount.getDiscount()));
     }
 
-    @Test
-    public void test05OpenMaxDiscountGame() {
-
-    }
-
-    @Test
-    public void test06DiscountCompare() {
-
-    }
-
-    @Test
-    public void test07DownloadFile() {
+        @Test
+    public void test05DownloadFile() {
 
     }
 }

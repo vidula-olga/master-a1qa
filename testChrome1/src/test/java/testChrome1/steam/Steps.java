@@ -122,10 +122,16 @@ public class Steps {
         return max;
     }
 
-    public void openMaxDiscountGame() {
+    public Integer openMaxDiscountGameAndDiscountCompare(MenuItem item) {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         WebConfigration configration = WebConfigration.getInstance();
-        Actions actions = new Actions(driver);
+        driver.get(item.getId());
+        WebElement realDiscountElement = (new WebDriverWait(driver, configration.getTimeout()))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"game_area_purchase\"]/div[1]/div/div[2]")));
+        String realDiscountValue = realDiscountElement.findElement(By.xpath(".//div[(@class='discount_pct' or @class='bundle_base_discount')]")).getText();
+        String realDiscountWithoutPercent = realDiscountValue.replace("%", "");
+        Integer realDiscount = -Integer.valueOf(realDiscountWithoutPercent); //
+        return realDiscount;
     }
 }
