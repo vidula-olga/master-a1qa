@@ -34,6 +34,12 @@ public class SteamTest {
     }*/
 
     @Test
+    public void test000000AgeCheck() {
+        WebDriverSingleton.getInstance().getWebDriver().get("https://store.steampowered.com/agecheck/app/863550/");
+        Steps.getInstance().passAgeCheckIfNeeded();
+    }
+
+    @Test
     public void test01OpenSteam() {
         WebConfigration configration = WebConfigration.getInstance();
         testChrome1.steam.Steps.getInstance().openSteam(configration.getUrlSteam());
@@ -61,7 +67,7 @@ public class SteamTest {
         Assert.assertThat(realDiscount, CoreMatchers.is(menuItemWithMaxDiscount.getDiscount()));
     }
 
-        @Test
+    @Test
     public void test05DownloadFile() {
 
     }

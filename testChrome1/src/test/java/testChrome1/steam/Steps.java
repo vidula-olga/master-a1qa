@@ -134,4 +134,17 @@ public class Steps {
         Integer realDiscount = -Integer.valueOf(realDiscountWithoutPercent); //
         return realDiscount;
     }
+
+    public void passAgeCheckIfNeeded() {
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
+        WebDriver driver = singletoneInstance.getWebDriver();
+        WebConfigration configration = WebConfigration.getInstance();
+        driver.getCurrentUrl().contains("agecheck");
+        WebElement ageYearsElement = (new WebDriverWait(driver, configration.getTimeout()))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"ageYear\"]")));
+        ageYearsElement.sendKeys("1999");
+        WebElement openPageAfterAgeCheck = (new WebDriverWait(driver, configration.getTimeout()))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app_agegate\"]/div[1]/div[3]/a[1]/span")));
+        openPageAfterAgeCheck.click();
+    }
 }
