@@ -33,11 +33,12 @@ public class SteamTest {
         }
     }*/
 
-    @Test
+   /* @Test
     public void test000000AgeCheck() {
-        WebDriverSingleton.getInstance().getWebDriver().get("https://store.steampowered.com/agecheck/app/863550/");
+        //WebDriverSingleton.getInstance().getWebDriver().get("https://store.steampowered.com/agecheck/app/863550/");
+        WebDriverSingleton.getInstance().getWebDriver().get("http://store.steampowered.com/app/552500/agecheck");
         Steps.getInstance().passAgeCheckIfNeeded();
-    }
+    }*/
 
     @Test
     public void test01OpenSteam() {
@@ -61,7 +62,6 @@ public class SteamTest {
         MenuItem menuItemWithMaxDiscount = Steps.getInstance().findElementWithMaxDiscount(menuItems);
         Assert.assertNotNull(menuItemWithMaxDiscount);
         // TODO: open(menuItemWithMaxDiscount)
-
         // TODO: check real discount  -> get real discount && compare with discount of menuItemWithMaxDiscount
         Integer realDiscount = Steps.getInstance().openMaxDiscountGameAndDiscountCompare(menuItemWithMaxDiscount);
         Assert.assertThat(realDiscount, CoreMatchers.is(menuItemWithMaxDiscount.getDiscount()));

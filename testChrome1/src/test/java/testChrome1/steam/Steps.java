@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import testChrome1.WebConfigration;
 import testChrome1.WebDriverSingleton;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,8 +128,9 @@ public class Steps {
         WebDriver driver = singletoneInstance.getWebDriver();
         WebConfigration configration = WebConfigration.getInstance();
         driver.get(item.getId());
+        Steps.getInstance().passAgeCheckIfNeeded();
         WebElement realDiscountElement = (new WebDriverWait(driver, configration.getTimeout()))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"game_area_purchase\"]/div[1]/div/div[2]")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"game_area_purchase\"]/div[2]/div/div[2]/div/div[1]")));
         String realDiscountValue = realDiscountElement.findElement(By.xpath(".//div[(@class='discount_pct' or @class='bundle_base_discount')]")).getText();
         String realDiscountWithoutPercent = realDiscountValue.replace("%", "");
         Integer realDiscount = -Integer.valueOf(realDiscountWithoutPercent); //
@@ -138,13 +140,25 @@ public class Steps {
     public void passAgeCheckIfNeeded() {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
-        WebConfigration configration = WebConfigration.getInstance();
-        driver.getCurrentUrl().contains("agecheck");
-        WebElement ageYearsElement = (new WebDriverWait(driver, configration.getTimeout()))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"ageYear\"]")));
-        ageYearsElement.sendKeys("1999");
-        WebElement openPageAfterAgeCheck = (new WebDriverWait(driver, configration.getTimeout()))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app_agegate\"]/div[1]/div[3]/a[1]/span")));
-        openPageAfterAgeCheck.click();
+        WebElement ageCkeckBlock;
+        try {
+            ageCkeckBlock = driver.findElement(By.id("app_agegate"));
+           // boolean blockAgePresent = ageCkeckBlock.isDisplayed();
+        } catch (NoSuchElementException e) {
+            ageCkeckBlock = null;
+        }
+        boolean blockAgePresent = ageCkeckBlock!=null;
+        if (blockAgePresent) {
+            //if (driver.getCurrentUrl().contains("agecheck")) {
+            if (driver.getPageSource().contains("ageYear")) {
+                WebElement ageYearsElement = driver.findElement(By.xpath("//*[@id=\"ageYear\"]"));
+                ageYearsElement.sendKeys("1999");
+                driver.findElement(By.xpath("//*[@id=\"app_agegate\"]/div[1]/div[3]/a[1]/span")).click();
+            } else {
+                WebElement openPageAfterAgeCheck = driver.findElement(By.xpath("//*[@id=\"app_agegate\"]/div[3]/a[1]/span"));
+                openPageAfterAgeCheck.click();
+            }
+
+        }
     }
 }
