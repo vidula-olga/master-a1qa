@@ -35,8 +35,8 @@ public class SteamTest {
 
    /* @Test
     public void test000000AgeCheck() {
-        //WebDriverSingleton.getInstance().getWebDriver().get("https://store.steampowered.com/agecheck/app/863550/");
-        WebDriverSingleton.getInstance().getWebDriver().get("http://store.steampowered.com/app/552500/agecheck");
+        WebDriverSingleton.getInstance().getWebDriver().get("https://store.steampowered.com/agecheck/app/863550/");
+        //WebDriverSingleton.getInstance().getWebDriver().get("http://store.steampowered.com/app/552500/agecheck");
         Steps.getInstance().passAgeCheckIfNeeded();
     }*/
 
@@ -69,6 +69,6 @@ public class SteamTest {
 
     @Test
     public void test05DownloadFile() {
-
+        Steps.getInstance().downloadStreamInstaller();
     }
 }

@@ -9,9 +9,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testChrome1.WebConfigration;
+import testChrome1.WebDriverFactory;
 import testChrome1.WebDriverSingleton;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +134,8 @@ public class Steps {
         driver.get(item.getId());
         Steps.getInstance().passAgeCheckIfNeeded();
         WebElement realDiscountElement = (new WebDriverWait(driver, configration.getTimeout()))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"game_area_purchase\"]/div[2]/div/div[2]/div/div[1]")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[(@class='discount_block game_purchase_discount')]")));
+        //TODO: better find element discount
         String realDiscountValue = realDiscountElement.findElement(By.xpath(".//div[(@class='discount_pct' or @class='bundle_base_discount')]")).getText();
         String realDiscountWithoutPercent = realDiscountValue.replace("%", "");
         Integer realDiscount = -Integer.valueOf(realDiscountWithoutPercent); //
@@ -143,11 +148,11 @@ public class Steps {
         WebElement ageCkeckBlock;
         try {
             ageCkeckBlock = driver.findElement(By.id("app_agegate"));
-           // boolean blockAgePresent = ageCkeckBlock.isDisplayed();
+            // boolean blockAgePresent = ageCkeckBlock.isDisplayed();
         } catch (NoSuchElementException e) {
             ageCkeckBlock = null;
         }
-        boolean blockAgePresent = ageCkeckBlock!=null;
+        boolean blockAgePresent = ageCkeckBlock != null;
         if (blockAgePresent) {
             //if (driver.getCurrentUrl().contains("agecheck")) {
             if (driver.getPageSource().contains("ageYear")) {
@@ -160,5 +165,54 @@ public class Steps {
             }
 
         }
+    }
+
+    private String waitUntilDownloadComplete(String directory, String filename) {
+        Path path = Paths.get(directory, filename);
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
+        WebDriver driver = singletoneInstance.getWebDriver();
+
+        new WebDriverWait(driver, Duration.ofMinutes(1).getSeconds(), Duration.ofSeconds(10).getSeconds())
+                .until(webDriver -> {
+                            return Files.exists(path);
+                        }
+                );
+
+        new WebDriverWait(driver, Duration.ofMinutes(5).getSeconds(), Duration.ofSeconds(10).getSeconds())
+                .until(new Function<WebDriver, Boolean>() {
+                           private long fileSize = 0;
+
+                           @Override
+                           public Boolean apply(WebDriver webDriver) {
+                               try {
+                                   long currentSize = Files.size(path);
+                                   if (currentSize > fileSize) {
+                                       fileSize = currentSize;
+                                       return Boolean.FALSE;
+                                   }
+
+                                   return Boolean.TRUE;
+                               } catch (IOException e) {
+                                   throw new RuntimeException(e);
+                               }
+                           }
+                       }
+                );
+        return path.toAbsolutePath().toString();
+    }
+
+    public void downloadStreamInstaller() {
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
+        WebDriver driver = singletoneInstance.getWebDriver();
+
+        WebConfigration configration = WebConfigration.getInstance();
+        driver.findElement(By.xpath("//*[@id=\"global_action_menu\"]/div[1]/a")).click();
+        WebElement downloadStreamInstallerElement = (new WebDriverWait(driver, configration.getTimeout()))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"about_install_steam_link\"]/span")));
+        downloadStreamInstallerElement.click();
+
+        String downloadsDirectory = WebDriverFactory.getDownloadsDirectory();
+
+        waitUntilDownloadComplete(downloadsDirectory, "SteamSetup.exe");
     }
 }
