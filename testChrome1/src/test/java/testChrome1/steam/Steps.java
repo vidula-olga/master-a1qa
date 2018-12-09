@@ -39,10 +39,15 @@ public class Steps {
         return steps;
     }
 
-    public void openSteam(String urlSteam) {
+    public void openSteam(String urlSteam, String lang) {
         WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
         WebDriver driver = singletoneInstance.getWebDriver();
         driver.get(urlSteam);
+        try {
+            chooseLang(lang);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         WebConfigration configration = WebConfigration.getInstance();
 
 
@@ -61,6 +66,35 @@ public class Steps {
             }
         });
 
+
+    }
+
+    private void chooseLang(String language) throws InterruptedException {
+        //   String pageSource = webDriver.getPageSource();
+        WebDriverSingleton singletoneInstance = WebDriverSingleton.getInstance();
+        WebDriver driver = singletoneInstance.getWebDriver();
+        WebConfigration configration = WebConfigration.getInstance();
+        String currentLang = driver.findElement(By.xpath("/html")).getAttribute("lang");
+        String shortLang;
+        switch (language) {
+            case "russian":
+                shortLang = "ru";
+                break;
+            case "english":
+                shortLang = "en";
+                break;
+            default:
+                throw new RuntimeException("неизвестный язык");
+        }
+
+        if (currentLang.equals(shortLang)) {
+            return;
+        }
+        WebElement languageChoice = driver.findElement(By.xpath("//*[@id=\"language_pulldown\"]"));
+        languageChoice.click();
+        String xpath = String.format(".//a[@href=\"?l=%s\"]", language);
+        WebElement languageElement = driver.findElement(By.xpath(xpath));
+        languageElement.click();
 
     }
 

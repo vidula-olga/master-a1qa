@@ -11,6 +11,8 @@ public class WebConfigration {
     private String displayName = "userShop.by_20";
     private String url = "https://www.shop.by";
     private String urlSteam = "https://store.steampowered.com/";
+    //private String steamLang = "russian";
+    private String steamLang = "english";
     private String SAMPLE_CSV_FILE = "./test.csv";
     private Integer pollingTimeout = 5;
     private Integer durationTimeout = 60;
@@ -59,5 +61,10 @@ public class WebConfigration {
     }
 
     public String getUrlSteam() {
-        return urlSteam;}
+        return urlSteam;
+    }
+
+    public String getStreamLang() {
+        return steamLang;
+    }
 }

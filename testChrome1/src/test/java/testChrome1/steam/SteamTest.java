@@ -43,7 +43,7 @@ public class SteamTest {
     @Test
     public void test01OpenSteam() {
         WebConfigration configration = WebConfigration.getInstance();
-        testChrome1.steam.Steps.getInstance().openSteam(configration.getUrlSteam());
+        Steps.getInstance().openSteam(configration.getUrlSteam(), configration.getStreamLang());
     }
 
     @Test
