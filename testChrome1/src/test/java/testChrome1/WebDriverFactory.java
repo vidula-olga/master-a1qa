@@ -3,9 +3,8 @@ package testChrome1;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,8 +33,9 @@ public class WebDriverFactory {
     public static WebDriver getWebDriver(String browser) {
         WebDriver webDriver;
         switch (browser) {
-            case "ie": {
-                webDriver = new InternetExplorerDriver();
+            case "firefox": {
+                System.setProperty("webdriver.gecko.driver", "C:\\IdeaProjects\\geckodriver-v0.23.0-arm7hf\\geckodriver");
+                webDriver = new FirefoxDriver();
                 break;
             }
             case "chrome": {
